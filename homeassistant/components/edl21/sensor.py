@@ -31,7 +31,7 @@ from homeassistant.helpers.dispatcher import (
     async_dispatcher_send,
 )
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.helpers.typing import UNDEFINED, ConfigType, DiscoveryInfoType
 from homeassistant.util.dt import utcnow
 
 _LOGGER = logging.getLogger(__name__)
@@ -335,7 +335,11 @@ class EDL21:
                 )
             else:
                 entity_description = SENSORS.get(obis)
-                if entity_description and entity_description.name:
+                if (
+                    entity_description
+                    and entity_description.name is not None
+                    and entity_description.name is not UNDEFINED
+                ):
                     name = entity_description.name
                     if self._name:
                         name = f"{self._name}: {name}"
