@@ -5,7 +5,7 @@ import pytest
 
 from homeassistant.components import otbr
 
-from . import CONFIG_ENTRY_DATA, DATASET
+from . import CONFIG_ENTRY_DATA, DATASET_CH16
 
 from tests.common import MockConfigEntry
 
@@ -20,7 +20,9 @@ async def otbr_config_entry_fixture(hass):
         title="Open Thread Border Router",
     )
     config_entry.add_to_hass(hass)
-    with patch("python_otbr_api.OTBR.get_active_dataset_tlvs", return_value=DATASET):
+    with patch(
+        "python_otbr_api.OTBR.get_active_dataset_tlvs", return_value=DATASET_CH16
+    ):
         assert await hass.config_entries.async_setup(config_entry.entry_id)
 
 

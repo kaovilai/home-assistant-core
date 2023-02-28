@@ -11,7 +11,7 @@ from homeassistant.components import otbr
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
-from . import BASE_URL, CONFIG_ENTRY_DATA, DATASET
+from . import BASE_URL, CONFIG_ENTRY_DATA, DATASET_CH16
 
 from tests.common import MockConfigEntry
 from tests.test_util.aiohttp import AiohttpClientMocker
@@ -28,13 +28,13 @@ async def test_import_dataset(hass: HomeAssistant) -> None:
     )
     config_entry.add_to_hass(hass)
     with patch(
-        "python_otbr_api.OTBR.get_active_dataset_tlvs", return_value=DATASET
+        "python_otbr_api.OTBR.get_active_dataset_tlvs", return_value=DATASET_CH16
     ), patch(
         "homeassistant.components.thread.dataset_store.DatasetStore.async_add"
     ) as mock_add:
         assert await hass.config_entries.async_setup(config_entry.entry_id)
 
-    mock_add.assert_called_once_with(config_entry.title, DATASET.hex())
+    mock_add.assert_called_once_with(config_entry.title, DATASET_CH16.hex())
 
 
 @pytest.mark.parametrize(
